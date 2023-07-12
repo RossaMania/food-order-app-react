@@ -9,6 +9,10 @@ import Checkout from "./Checkout";
 const Cart = (props) => {
   const [isCheckOut, setIsCheckOut] = useState(false);
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [didSubmit, setDidSubmit] = useState(false);
+
   const cartCtx = useContext(CartContext);
 
   const totalAmount = `$${cartCtx.totalAmount.toFixed(2)}`;
@@ -27,8 +31,9 @@ const Cart = (props) => {
     setIsCheckOut(true);
   };
 
-  const handleSubmittedOrder = (userData) => {
-    fetch(
+  const handleSubmittedOrder = async (userData) => {
+     setIsSubmitting(true);
+     await fetch(
       "https://food-order-app-react-a3ea3-default-rtdb.firebaseio.com/orders.json",
       {
         method: "POST",
@@ -36,8 +41,10 @@ const Cart = (props) => {
           user: userData,
           orderedItems: cartCtx.items,
         }),
-      }
-    );
+      });
+      setIsSubmitting(false);
+      setDidSubmit(true);
+      cartCtx.clearCart();
   }
 
   const cartItems = (
@@ -70,15 +77,43 @@ const Cart = (props) => {
     </div>
   );
 
-  return (
-    <Modal>
+  const cartModalContent = (
+    <React.Fragment>
       {cartItems}
       <div className={classes.total}>
         <span>Total Amount</span>
         <span>{totalAmount}</span>
       </div>
-      {isCheckOut && <Checkout onConfirm={handleSubmittedOrder} onCancel={props.onClose}/>}
+      {isCheckOut && (
+        <Checkout onConfirm={handleSubmittedOrder} onCancel={props.onClose} />
+      )}
       {!isCheckOut && modalActions}
+    </React.Fragment>
+  );
+
+  const isSubmittingModalContent = (
+    <p>Your tastebuds rock! Submitting order data...</p>
+  );
+
+  const didSubmitModalContent = (
+    <React.Fragment>
+      <p>
+        Success! Order submitted! A meal fit for a king! Or a queen! Or court
+        jester!
+      </p>
+      <div className={classes.actions}>
+        <button className={classes.button} onClick={props.onClose}>
+          Close
+        </button>
+      </div>
+    </React.Fragment>
+  );
+
+  return (
+    <Modal onClose={props.onClose}>
+      {!isSubmitting && !didSubmit && cartModalContent}
+      {isSubmitting && isSubmittingModalContent}
+      {!isSubmitting && didSubmit && didSubmitModalContent}
     </Modal>
   );
 };
