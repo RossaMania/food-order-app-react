@@ -5,12 +5,11 @@ const isEmpty = (value) => value.trim() === "";
 const isFiveNumbers = (value) => value.trim().length === 5;
 
 const Checkout = (props) => {
-
   const [formInputsValidity, setFormInputsValidity] = useState({
     name: true,
     street: true,
     city: true,
-    postalCode: true
+    postalCode: true,
   });
 
   const nameInputRef = useRef();
@@ -35,8 +34,8 @@ const Checkout = (props) => {
       name: enteredNameIsValid,
       street: enteredAddressIsValid,
       city: enteredCityIsValid,
-      postalCode: enteredZIPIsValid
-    })
+      postalCode: enteredZIPIsValid,
+    });
 
     const formIsValid =
       enteredNameIsValid &&
@@ -44,18 +43,30 @@ const Checkout = (props) => {
       enteredCityIsValid &&
       enteredZIPIsValid;
 
-      if (!formIsValid) {
-        return;
-      }
+    if (!formIsValid) {
+      return;
+    }
 
-      // Submit cart data
-
+    props.onConfirm({
+      name: enteredName,
+      street: enteredAddress,
+      city: enteredCity,
+      postalCode: enteredZIPcode,
+    });
   };
 
-  const nameControlClasses = `${classes.control} ${formInputsValidity.name ? "" : classes.invalid}`
-  const addressControlClasses = `${classes.control} ${formInputsValidity.street ? "" : classes.invalid}`
-  const cityControlClasses = `${classes.control} ${formInputsValidity.city ? "" : classes.invalid}`
-  const postalCodeControlClasses = `${classes.control} ${formInputsValidity.postalCode ? "" : classes.invalid}`
+  const nameControlClasses = `${classes.control} ${
+    formInputsValidity.name ? "" : classes.invalid
+  }`;
+  const addressControlClasses = `${classes.control} ${
+    formInputsValidity.street ? "" : classes.invalid
+  }`;
+  const cityControlClasses = `${classes.control} ${
+    formInputsValidity.city ? "" : classes.invalid
+  }`;
+  const postalCodeControlClasses = `${classes.control} ${
+    formInputsValidity.postalCode ? "" : classes.invalid
+  }`;
 
   return (
     <form onSubmit={handleOrderConfirmation}>
@@ -77,7 +88,9 @@ const Checkout = (props) => {
       <div className={postalCodeControlClasses}>
         <label htmlFor="postal">ZIP Code</label>
         <input type="text" id="postal" ref={zipCodeInputRef} />
-        {!formInputsValidity.postalCode && <p>Please enter a valid ZIP code!</p>}
+        {!formInputsValidity.postalCode && (
+          <p>Please enter a valid ZIP code!</p>
+        )}
       </div>
       <div className={classes.actions}>
         <button type="button" onClick={props.onCancel}>
