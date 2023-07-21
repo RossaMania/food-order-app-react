@@ -1,3 +1,16 @@
+# food-order-app-react
+
+This food app, "food-order-app-react," features a Firebase database for the back end. Users can add or remove items to/from the cart. This can be done by using the "Add" button on the home page or by using the "+" or "-" buttons in the "Your Cart" modal. Additionally, users can click the "Order" button to enter information for an order. The meal order and the information (Your Name, Street Address, City, and ZIP Code) are saved to Firebase!
+
+The starter code and project are part of the "React - The Complete Guide 2023 (incl. React Router & Redux)" course on Udemy, from Academind. This bestselling course has turned more than 700,000 students into ReactJS developers (more than any other React course on Udemy)!
+
+## Usage
+
+The "food-order-app-react" allows you to do the following:
+- Add or remove items from the cart using the "Add" button on the home page or the "+" and "-" buttons in the "Your Cart" modal.
+- Click the "Order" button to enter information for an order, including Your Name, Street Address, City, and ZIP Code.
+- Save the meal order and order information to Firebase.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
